@@ -1,17 +1,19 @@
 const express = require('express');
 const upload = require('express-fileupload');
+const sequelize = require('./database')
 var fs = require('fs');
-
-const config = {
-  baseURL: process.env.BASEURL,
-}
+var config = require('./config');
 
 const app = express();
+
+sequelize.sync().then(() =>  {
+  console.log('db is ready')
+})
 
 app.use(upload());
 app.use(express.static("public"));
 
-const port = process.env.PORT || 8050;
+
 // const txtToJson = require("txt-file-to-json");
 // const dataInJson = txtToJson({ filePath: "./sample_movies.txt" });
 
@@ -40,6 +42,6 @@ app.post('/', (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`server start on port ${port}`)
+app.listen(config.port, () => {
+  console.log(`server start on port ${config.port}`)
 })
