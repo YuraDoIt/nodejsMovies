@@ -43,7 +43,13 @@ app.post('/', (req, res) => {
 })
 
 app.post('/users', async (req, res) => {
+  const user = req.body;
+  if(user.password != user.confirmPassword) {
+    res.send("password not match")
+    throw new Error('password not match');
+  }
   await User.create(req.body)
+
   res.send('user is inserted');
 });
 
