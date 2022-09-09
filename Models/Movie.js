@@ -16,11 +16,16 @@ Movie.init({
     type: DataTypes.INTEGER
   },
   Format: {
-    type: DataTypes.STRING
+    type: DataTypes.ENUM,
+    values: ['VHS','DVD','Blu-ray']
+  },
+  Stars: {
+    type: DataTypes.STRING,
   }
 }, {
   sequelize,
-  modelName: 'movie'
+  modelName: 'movie',
+  timestamps: false
 });
 
 module.exports = Movie;

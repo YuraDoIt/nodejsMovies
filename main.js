@@ -68,12 +68,26 @@ app.put('/users/:id', async (req, res) => {
   await user.save();
 
   res.send(user);
-})
+});
+
+app.delete('/users/:id', async (req, res) => {
+  const requestId = req.params.id;
+  const user = await User.destroy({ where: {user_id: requestId} });
+  user.email = req.body.email;
+  await user.save();
+
+  res.send(user);
+});
 
 app.post('/movies', (req, res) => {
   Movie.create(req.body).then(() => {
     res.send('movie sucessfully created');
   })
+});
+
+app.get('/movies', async (req, res) => {
+  const movie = await Movie.findAll();
+  res.send(movie);
 })
 
 app.listen(config.port, () => {
