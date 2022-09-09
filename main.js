@@ -2,11 +2,16 @@ const express = require('express');
 const upload = require('express-fileupload');
 var fs = require('fs');
 
+const config = {
+  baseURL: process.env.BASEURL,
+}
+
 const app = express();
 
 app.use(upload());
+app.use(express.static("public"));
 
-const port = process.env.PORT || 3009;
+const port = process.env.PORT || 8050;
 // const txtToJson = require("txt-file-to-json");
 // const dataInJson = txtToJson({ filePath: "./sample_movies.txt" });
 
@@ -21,22 +26,20 @@ let movies = fs.readFile('sample_movies.txt', 'utf-8', function(err, data) {
 
 
 app.get('/', (req, res) => {
-  // let jsonObj = {"name": 124};
-  // res.send("5lk3j5kl3j")
   res.sendFile(__dirname + "/index.html");
 });
 
 app.post('/', (req, res) => {
   if(req.files) {
-    console.log(req.files)
-
+    let obj = {};
     let file = req.files.file;
-    console.log(file)
-    // let filename = file.name
+    let filename = file.name;
+    let dataFile = file.data.toString();
+    console.log(JSON.parse(dataFile));
+    
   }
 })
 
 app.listen(port, () => {
-  // console.log(movies);
   console.log(`server start on port ${port}`)
 })
