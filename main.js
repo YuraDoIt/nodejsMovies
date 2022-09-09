@@ -1,6 +1,6 @@
 const express = require('express');
 const upload = require('express-fileupload');
-const sequelize = require('./database')
+const sequelize = require('./database');
 var fs = require('fs');
 
 var config = require('./config/config');
@@ -14,7 +14,9 @@ app.use(upload());
 
 sequelize.sync({force: true}).then(() =>  {
   console.log('db is ready')
-})
+});
+
+const movieController = require('./controllers/movieController');
 
 // const txtToJson = require("txt-file-to-json");
 // const dataInJson = txtToJson({ filePath: "./sample_movies.txt" });
@@ -85,16 +87,10 @@ app.delete('/users/:id', async (req, res) => {
   res.send(user);
 });
 
-app.post('/movies', (req, res) => {
-  Movie.create(req.body).then(() => {
-    res.send('movie sucessfully created');
-  })
-});
-
-app.get('/movies', async (req, res) => {
-  const movie = await Movie.findAll();
-  res.send(movie);
-})
+//
+app.post('/movies', movieController.CreateMovie);
+app.get('/movies', movieController.getAllMovies);
+app.get('/movies/:id', movieController.getMovieById)
 
 app.listen(config.port, () => {
   console.log(`server start on port ${config.port}`)
