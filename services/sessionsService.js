@@ -7,12 +7,27 @@ exports.sessionsCreate = async(req, res, next) => {
   const {email, password} = req.body;
 
   if(!email || !password) {
-    // throw new Error('email or password is not defined');
+    return res
+    .status(404)
+    .send(
+      {
+        message: 'password or email is empty',
+        status: 2
+     });
   }
 
   const currentUser = await User.findOne({where: 
     {email: email}}
   );
+  if(!currentUser){
+    return res
+    .status(404)
+    .send(
+      {
+        message: 'This user not exist',
+        status: 2
+     });
+  }
 
   if(!(await bcrypt.compare(password,currentUser.dataValues.password))) {
     return res
