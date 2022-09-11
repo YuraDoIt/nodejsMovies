@@ -108,8 +108,25 @@ exports.findMovieByTitle = async (req, res, next) => {
 
 exports.MoviesList = async (req, res, next) => {
   try{
+    // const actor = req.query.actor;
+    const title = req.query.title;
+    const queryCommand = { };
+    if(title) {
+      queryCommand = Object.assign(queryCommand, {
+        Title: `${title}`
+      })
+    }
+    console.log(queryCommand)
+
     const requestSort = req.query.sort;
-    const orderType = req.query.order;
+    if(!req.query.sort){
+      requestSort = movie_id;
+    }
+
+    const orderType = (req.query.order).toString();
+    if(!req.query.order){
+      orderType = 'ASC';
+    }
     const limit = req.query.limit;
     const offset = req.query.offset;
     console.log(requestSort)
@@ -117,12 +134,13 @@ exports.MoviesList = async (req, res, next) => {
     console.log(limit);
     console.log(offset);
 
+
     const movie = await Movie.findAll(
       { where: 
-        {
-          Title: requestTitle
-        },
-        order: ['Title', `${orderType}`]
+        queryCommand,
+        order: [
+          ['Title', `${orderType}`]
+        ]
       }
     );
       

@@ -19,9 +19,9 @@ Movie.init({
     type: DataTypes.ENUM,
     values: ['VHS','DVD','Blu-ray']
   },
-  Stars: {
-    type: DataTypes.STRING,
-  }
+  Stars: [
+    DataTypes.STRING,
+  ]
 }, {
   sequelize,
   modelName: 'movie',

@@ -118,12 +118,12 @@ app.delete('/users/:id', async (req, res) => {
 }); 
 
 //
-app.post('/api/v1/movies', auth,  movieController.CreateMovie);
-app.get('/api/v1/movies', auth, movieController.getAllMovies);
-app.get('/api/v1/movies/:id', auth, movieController.getMovieById);
-app.delete('/api/v1/movies/:id', auth, movieController.deleteMovieById);
-app.get('/api/v1/movie/Title', auth, movieController.findMovieByTitle);
-app.get('/api/v1/movie/list', auth, movieController.MoviesList)
+app.post('/api/v1/movies', movieController.CreateMovie);
+app.get('/api/v1/movies',  movieController.getAllMovies);
+app.get('/api/v1/movies/:id', movieController.getMovieById);
+app.delete('/api/v1/movies/:id', movieController.deleteMovieById);
+app.get('/api/v1/movie/Title', movieController.findMovieByTitle);
+app.get('/api/v1/movie/list',  movieController.MoviesList)
 
 app.listen(config.port, () => {
   console.log(`server start on port ${config.port}`)
