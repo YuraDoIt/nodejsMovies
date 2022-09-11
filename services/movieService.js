@@ -88,7 +88,6 @@ exports.deleteMovieById = async (req, res, next) => {
 exports.findMovieByTitle = async (req, res, next) => {
   try{
     const requestTitle = req.body.Title;
-    console.log(requestTitle);
     
     const movie = await Movie.findAll({ where: {Title: requestTitle}});
       

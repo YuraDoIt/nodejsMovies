@@ -17,6 +17,7 @@
   }
 
   #main-content {
+    border-radius: 25px;
     width: 500px; 
     margin: 0 auto; 
     background: #000; 
@@ -28,9 +29,18 @@
     background-image: url("https://amymhaddad.s3.amazonaws.com/morocco-blue.png");
   }
 
+  #main-content p {
+    margin-bottom: 15px;
+  }
+
+  #main-content input {
+    cursor: pointer;
+  }
+
   button {
     height: 50px;
     width: 150px;
+    border-radius: 10px;
   }
 
   </style>
@@ -39,6 +49,7 @@
 
   <div>
     <div id="main-content">
+    <p>Завантажте файл</p>
       <form method="POST" action="/" enctype="multipart/form-data">
         <input type="file" name="file" value="Вибрати файл"/>
         <input type="submit" value="Upload"/>

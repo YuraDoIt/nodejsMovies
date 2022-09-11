@@ -15,7 +15,7 @@ router.route('/:id')
   .delete(movieService.deleteMovieById)
 
 router
-  .route('/Title')
+  .route('/title')
   .get(movieService.findMovieByTitle)
 
 router
