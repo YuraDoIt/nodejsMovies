@@ -35,8 +35,7 @@ exports.createUser = async(req, res, next) => {
       expiresIn: "1h"
     }
   )
-  console.log(token)
-  res.status(201).send({
+  return res.status(201).send({
     token: token,
     status: 1,
   });
@@ -44,16 +43,16 @@ exports.createUser = async(req, res, next) => {
 
 exports.getAllUsers = async (req, res) => {
   const users = await User.findAll();
-  res.send(users);
+  return res.send(users);
 }
 
 exports.getUserById =  async (req, res) => {
   const requestId = req.params.id;
   const user = await User.findOne({ where: {user_id: requestId} });
   if(!user) {
-    res.send('This user not exist')
+    return res.send('This user not exist')
   } else
-  res.send(user);
+  return res.send(user);
 }
 
 exports.deleteUserById = async (req, res) => {

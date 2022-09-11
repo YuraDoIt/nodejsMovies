@@ -4,7 +4,7 @@ exports.CreateMovie = async (req, res, next) => {
   try {
     const movie = await Movie.create(req.body);
       
-      res.status(200).json({
+      return res.status(200).json({
         data: movie,
         status: "succes",
         results: movie.length,
@@ -12,7 +12,7 @@ exports.CreateMovie = async (req, res, next) => {
 
   }
   catch(err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
     })
     console.log(err);
@@ -23,17 +23,16 @@ exports.getAllMovies = async (req, res, next) => {
   try{
     const movie = await Movie.findAll();
       
-      res.status(200).json({
+      return res.status(200).json({
         data: movie,
         status: "succes",
         results: movie.length,
       });
 
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
     })
-    console.log(err);
   }
 }
 
@@ -42,29 +41,28 @@ exports.getMovieById = async (req, res, next) => {
     const requestId = req.params.id;
     const movie = await Movie.findOne({ where: {movie_id: requestId}});
       
-      res.status(200).json({
+      return res.status(200).json({
         data: movie,
         status: "succes",
         results: movie.length,
       });
 
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
     })
-    console.log(err);
   }
 }
 
 exports.updateMovie = async(req, res, next) => {
     const requestId = req.params.id;
     if(Movie.findOne({where: {movie_id: requestId}})) {
-      res.status(400).send('This user not exist')
+      res.status(400).send('This movie not exist')
     }
     await Movie.update(req.body, { where: {movie_id: requestId} })
     const result = await Movie.findOne({where: {movie_id: requestId}})
 
-    res.status(200).json({
+    return res.status(200).json({
       data: result
     })
 }
@@ -74,17 +72,16 @@ exports.deleteMovieById = async (req, res, next) => {
     const requestId = req.params.id;
     const movie = await Movie.destroy({ where: {movie_id: requestId}});
       
-      res.status(200).json({
+    return res.status(200).json({
         data: movie,
         status: "succes",
         results: movie.length,
       });
 
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
     })
-    console.log(err);
   }
 }
 
@@ -95,14 +92,14 @@ exports.findMovieByTitle = async (req, res, next) => {
     
     const movie = await Movie.findAll({ where: {Title: requestTitle}});
       
-      res.status(200).json({
+    return res.status(200).json({
         data: movie,
         status: "succes",
         results: movie.length,
       });
 
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "fail",
     })
     console.log(err);
@@ -155,7 +152,7 @@ exports.MoviesList = async (req, res, next) => {
       }
     );
       
-    res.status(200).json({
+    return res.status(200).json({
       data: movie,
       status: "succes",
       results: movie.length,

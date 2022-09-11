@@ -8,6 +8,7 @@ const auth = require('./middleware/auth');
 const userService = require('./services/userService');
 const movieRouter = require('./routers/movieRoutes');
 const userRouter = require('./routers/userRoutes');
+const sessionRouter = require('./routers/sessionsRoutes');
 
 const app = express();
 app.use(express.json());
@@ -60,6 +61,7 @@ app.post('/', (req, res) => {
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/movies', movieRouter);
+app.use('/api/v1/sessions', sessionRouter)
 
 app.listen(config.port, () => {
   console.log(`server start on port ${config.port}`)
