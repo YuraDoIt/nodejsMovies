@@ -5,7 +5,9 @@ var fs = require('fs');
 
 var config = require('./config/config');
 const User = require('./Models/User');
-const Movie = require('./Models/Movie');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const auth = require('./middleware/auth')
 
 const app = express();
 app.use(express.json());
@@ -44,18 +46,45 @@ app.post('/', (req, res) => {
   }
 })
 
-app.post('/users', async (req, res) => {
-  const user = req.body;
-  if(user.password != user.confirmPassword) {
-    res.send("password not match")
+app.post('/api/v1/users', async (req, res) => {
+  const {email , name, password, confirmPassword} = req.body;
+  console.log(email, name,  password)
+
+  if(!(email, name, password)) {
+    res.status(400).send("All input is required");
+  }
+
+  if(password != confirmPassword) {
+    res.status(400).send("password not match")
     throw new Error('password not match');
   }
-  await User.create(req.body)
 
-  res.send('user is inserted');
+  let encryptedPassword = await bcrypt.hash(password, 10);
+
+  const user = await User.create({
+    email: email.toLowerCase(),
+    name,
+    password: encryptedPassword
+  })
+
+  const token = jwt.sign(
+    {
+      user_id: user.user_id,
+      email
+    },
+    `${config.tokenKey}`,
+    {
+      expiresIn: "2h"
+    }
+  )
+  console.log(token)
+  res.status(201).send({
+    token: token,
+    status: 1,
+  });
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', auth, async (req, res) => {
   const users = await User.findAll();
   res.send(users);
 });
@@ -85,12 +114,15 @@ app.delete('/users/:id', async (req, res) => {
   await user.save();
 
   res.send(user);
-});
+}); 
 
 //
-app.post('/movies', movieController.CreateMovie);
-app.get('/movies', movieController.getAllMovies);
-app.get('/movies/:id', movieController.getMovieById)
+app.post('/api/v1/movies', auth,  movieController.CreateMovie);
+app.get('/api/v1/movies', auth, movieController.getAllMovies);
+app.get('/api/v1/movies/:id', auth, movieController.getMovieById);
+app.delete('/api/v1/movies/:id', auth, movieController.deleteMovieById);
+app.get('/api/v1/movie/Title', auth, movieController.findMovieByTitle);
+app.get('/api/v1/movie/list', auth, movieController.MoviesList)
 
 app.listen(config.port, () => {
   console.log(`server start on port ${config.port}`)
