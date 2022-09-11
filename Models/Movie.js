@@ -8,6 +8,7 @@ Movie.init({
     type: DataTypes.INTEGER,
     unique: true,
     primaryKey: true,
+    autoIncrement: true
   },
   Title: {
     type: DataTypes.STRING,

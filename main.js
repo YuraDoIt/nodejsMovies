@@ -1,24 +1,23 @@
 const express = require('express');
 const upload = require('express-fileupload');
-const sequelize = require('./database');
-var fs = require('fs');
+const fs = require('fs');
 
-var config = require('./config/config');
-const User = require('./Models/User');
+const config = require('./config/config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth')
+const movieController = require('./controllers/movieController');
+const sequelize = require('./database');
 
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 app.use(upload());
 
+const User = require('./Models/User');
 sequelize.sync({force: true}).then(() =>  {
   console.log('db is ready')
 });
-
-const movieController = require('./controllers/movieController');
 
 // const txtToJson = require("txt-file-to-json");
 // const dataInJson = txtToJson({ filePath: "./sample_movies.txt" });
@@ -121,6 +120,7 @@ app.delete('/users/:id', async (req, res) => {
 app.post('/api/v1/movies', movieController.CreateMovie);
 app.get('/api/v1/movies',  movieController.getAllMovies);
 app.get('/api/v1/movies/:id', movieController.getMovieById);
+app.patch('/api/v1/movies/:id', movieController.updateMovie);
 app.delete('/api/v1/movies/:id', movieController.deleteMovieById);
 app.get('/api/v1/movie/Title', movieController.findMovieByTitle);
 app.get('/api/v1/movie/list',  movieController.MoviesList)
