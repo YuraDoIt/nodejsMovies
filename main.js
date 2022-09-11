@@ -69,12 +69,13 @@ app.post('/api/v1/users', async (req, res) => {
 
   const token = jwt.sign(
     {
+      name,
       user_id: user.user_id,
       email
     },
     `${config.tokenKey}`,
     {
-      expiresIn: "2h"
+      expiresIn: "1h"
     }
   )
   console.log(token)
