@@ -20,6 +20,8 @@ To pull image from dockerHub just run
 docker pull yuradoit/mytestapp:latest
 ```
 
+Altho you can find in folder PostmanCollection postman collection
+
 ## Authors
 
 - [@yuraTs](https://www.linkedin.com/in/yura-tsudzenko-417561173/)
