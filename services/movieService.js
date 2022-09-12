@@ -114,18 +114,23 @@ exports.findMovieByTitle = async (req, res, next) => {
 }
 
 exports.MoviesList = async (req, res, next) => {
+  try{
     let queryCommand = { };
     const actor = (req.query.actor).toString();
     const title = (req.query.title).toString();
 
     if(actor) {
       queryCommand = Object.assign(queryCommand, {
-        stars: `${actor}`
+        stars: {
+          [Op.like]: `%${actor}%`
+      }
       })
     }
     if(title) {
       queryCommand = Object.assign(queryCommand, {
-        title: `${title}`
+        title: {
+          [Op.like]: `%${title}%`
+      }
       })
     }
     console.log(queryCommand)
@@ -136,7 +141,6 @@ exports.MoviesList = async (req, res, next) => {
     if(!req.query.sort || req.query.sort == 'id'){
       requestSort = 'movie_id';
     }
-
    
     //!Order
     let orderType = (req.query.order).toString();
@@ -157,13 +161,7 @@ exports.MoviesList = async (req, res, next) => {
     }
 
     const movie = await Movie.findAll(
-      { where: 
-        {
-          stars: {
-            [Op.like]: `%${actor}%`
-        },
-
-      },
+      { where: queryCommand,
         order: [
           [`${requestSort}`, `${orderType}`]
         ],
@@ -177,4 +175,10 @@ exports.MoviesList = async (req, res, next) => {
       status: "succes",
       results: movie.length,
     });
+  }
+  catch(err) {
+    return res.status(400).json({
+      status: "fail",
+      message: "can't list of movies query wrong"
+    })  }
 }
