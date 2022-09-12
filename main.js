@@ -20,16 +20,8 @@ sequelize.sync({force: true}).then(() =>  {
   console.log(chalk.yellow('db is ready'))
 });
 
-let movies = fs.readFile('sample_movies.txt', 'utf-8', function(err, data) {
-  if(err) throw err;
-  // console.log(data);
-  var cells = data.split('\n\n');
-  // console.log(cells)
-  return data;
-})
-
 app.use('/', mainRouter);
-app.use('/api/v1/users', userRouter);
+app.use('/api/v1/users', auth, userRouter);
 app.use('/api/v1/movies', movieRouter);
 app.use('/api/v1/sessions', sessionRouter)
 
