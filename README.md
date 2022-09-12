@@ -9,4 +9,4 @@ To run this project just simply run command below:
 
 docker build -t test-app-image .
 
-docker run -d -p 8050:8050 --name test-app test-app-image
+docker run -d -p 8000:8050 -e APP_PORT=8050 --name test-app test-app-image

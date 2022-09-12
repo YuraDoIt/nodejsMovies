@@ -21,8 +21,8 @@ sequelize.sync({force: true}).then(() =>  {
 });
 
 app.use('/', mainRouter);
-app.use('/api/v1/users', auth, userRouter);
-app.use('/api/v1/movies', movieRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/movies', auth, movieRouter);
 app.use('/api/v1/sessions', sessionRouter)
 
 app.listen(config.port, () => {
