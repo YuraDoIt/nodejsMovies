@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
     const decodedToken = jwt.verify(token, 
       `${config.tokenKey}`);
 
-    console.log(dateTimeNow + " " + decodedToken.iat )
     if(dateTimeNow > decodedToken.exp) {
       return res.status(400).send({
         error: 'date time of token is expired'

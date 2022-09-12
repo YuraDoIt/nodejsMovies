@@ -10,7 +10,6 @@ exports.CreateMovie = async (req, res, next) => {
       })    }
 
     const movie = await Movie.create(req.body);
-      console.log(movie)
       return res.status(200).json({
         data: movie,
         status: "succes",
@@ -133,7 +132,6 @@ exports.MoviesList = async (req, res, next) => {
       }
       })
     }
-    console.log(queryCommand)
 
     //!Sort
     let requestSort = (req.query.sort).toString();

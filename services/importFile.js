@@ -9,7 +9,6 @@ exports.PostMain = async (req, res, next) => {
     let obj = {};
     let file = req.files.file;
     let filename = file.name;
-    console.log(filename)
     if(filename != 'sample_movies.txt') {
       return res.status(400).json({
         status: 2,

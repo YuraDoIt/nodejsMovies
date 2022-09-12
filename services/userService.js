@@ -5,7 +5,6 @@ const config = require('../config/config')
 
 exports.createUser = async(req, res, next) => {
   const {email , name, password, confirmPassword} = req.body;
-  console.log(email, name,  password)
 
   if(!(email, name, password)) {
     res.status(400).send("All input is required");
