@@ -17,11 +17,7 @@ module.exports = async (req, res, next) => {
       });
     }
     
-    console.log(decodedToken);
-    console.log(decodedToken.exp)
-
     const {email} = decodedToken;
-    console.log(email + " email")
 
     let userFromDb = await dbUser.findOne({email: email});
     if(!userFromDb) {
@@ -31,8 +27,8 @@ module.exports = async (req, res, next) => {
     }
       next();
   } catch {
-    res.status(400).send({
-      error: 'no authorization token'
+    return res.status(400).send({
+      error: 'Authorization token not appropriate'
     });
   }
 }

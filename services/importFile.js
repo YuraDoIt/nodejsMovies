@@ -1,8 +1,10 @@
+const Movie = require('../Models/Movie');
+
 exports.RenderMain = (req, res, next) => {
   res.sendFile(__dirname + "/public/index.html");
 }
 
-exports.PostMain = (req, res, next) => {
+exports.PostMain = async (req, res, next) => {
   if(req.files) {
     let obj = {};
     let file = req.files.file;
@@ -32,6 +34,10 @@ exports.PostMain = (req, res, next) => {
       });
   }
 
-  console.log(arr, arr.length);
+  for(let i = 0; i<arr.length; i++) {
+    await Movie.create(arr[i]);
+  }  
+
+    return res.status(200).redirect('/');
   }
 }

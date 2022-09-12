@@ -19,7 +19,7 @@ router
   .get(movieService.findMovieByTitle)
 
 router
-  .route('/list')
+  .route('/list/mov')
   .get(movieService.MoviesList)
 
 

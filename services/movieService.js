@@ -1,4 +1,5 @@
 const Movie = require('../Models/Movie');
+const { Op } = require("sequelize");
 
 exports.CreateMovie = async (req, res, next) => {
   try {
@@ -113,9 +114,10 @@ exports.findMovieByTitle = async (req, res, next) => {
 }
 
 exports.MoviesList = async (req, res, next) => {
-    const actor = req.query.actor;
-    let title = req.query.title;
     let queryCommand = { };
+    const actor = (req.query.actor).toString();
+    const title = (req.query.title).toString();
+
     if(actor) {
       queryCommand = Object.assign(queryCommand, {
         stars: `${actor}`
@@ -129,17 +131,13 @@ exports.MoviesList = async (req, res, next) => {
     console.log(queryCommand)
 
     //!Sort
-    let requestSort = req.query.sort;
-    if(!req.query.sort){
-      requestSort = movie_id;
-    }
-    if(requestSort != 'id' || requestSort != 'title' || requestSort != 'year'){
-      return res.status(400).json({
-        status: "fail",
-        message: "query sort is not appropriate"
-      })
+    let requestSort = (req.query.sort).toString();
+
+    if(!req.query.sort || req.query.sort == 'id'){
+      requestSort = 'movie_id';
     }
 
+   
     //!Order
     let orderType = (req.query.order).toString();
     if(!req.query.order){
@@ -160,9 +158,14 @@ exports.MoviesList = async (req, res, next) => {
 
     const movie = await Movie.findAll(
       { where: 
-        queryCommand,
+        {
+          stars: {
+            [Op.like]: `%${actor}%`
+        },
+
+      },
         order: [
-          ['title', `${orderType}`]
+          [`${requestSort}`, `${orderType}`]
         ],
         limit: limit,
         offset: offset,

@@ -30,7 +30,7 @@ let movies = fs.readFile('sample_movies.txt', 'utf-8', function(err, data) {
 
 app.use('/', mainRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/movies', auth, movieRouter);
+app.use('/api/v1/movies', movieRouter);
 app.use('/api/v1/sessions', sessionRouter)
 
 app.listen(config.port, () => {
