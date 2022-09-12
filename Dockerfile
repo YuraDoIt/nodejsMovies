@@ -8,4 +8,4 @@ COPY . ./
 ENV PORT=8050
 EXPOSE $PORT
 
-CMD ["node", "main.js"]
+CMD ["npm", "run", "server"]
