@@ -7,7 +7,7 @@ To run this project just simply run command below:
 - npm install
 - npm run server
 
-
+Command to run this project via Docker 
 ```bash
 docker build -t test-app-image .
 ```
