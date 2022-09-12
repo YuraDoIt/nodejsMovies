@@ -15,6 +15,11 @@ docker build -t test-app-image .
 docker run -d -p 8000:8050 -e APP_PORT=8050 --name test-app test-app-image
 ```
 
+To pull image from dockerHub just run
+```bash
+docker pull yuradoit/mytestapp:latest
+```
+
 ## Authors
 
 - [@yuraTs](https://www.linkedin.com/in/yura-tsudzenko-417561173/)
