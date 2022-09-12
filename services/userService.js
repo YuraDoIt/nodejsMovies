@@ -11,9 +11,18 @@ exports.createUser = async(req, res, next) => {
     res.status(400).send("All input is required");
   }
 
+  if(await User.findOne({email: email})){
+    return res.status(400).json({
+      status: "fail",
+      message: "user already exist"
+    })
+  }
+
   if(password != confirmPassword) {
-    res.status(400).send("password not match")
-    throw new Error('password not match');
+    return res.status(400).json({
+      status: "fail",
+      message: "password not match"
+    })
   }
 
   let encryptedPassword = await bcrypt.hash(password, 10);
@@ -50,7 +59,10 @@ exports.getUserById =  async (req, res) => {
   const requestId = req.params.id;
   const user = await User.findOne({ where: {user_id: requestId} });
   if(!user) {
-    return res.send('This user not exist')
+    return res.status(400).json({
+      status: "fail",
+      message: "user not exist"
+    })
   } else
   return res.send(user);
 }
@@ -66,6 +78,14 @@ exports.deleteUserById = async (req, res) => {
 
 exports.updateUserById = async (req, res) => {
   const requestId = req.params.id;
+
+  if(!await User.findOne({where: {user_is: requestId}})) {
+    return res.status(400).json({
+      status: "fail",
+      message: "user not exist"
+    })
+  }
+
   const user = await User.findOne({ where: {user_id: requestId} });
   user.email = req.body.email;
   await user.save();

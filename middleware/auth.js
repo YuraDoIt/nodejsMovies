@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const jwtExpiration = require('jwt-check-expiration');
 
 const dbUser = require('../Models/User');
 
@@ -13,7 +12,7 @@ module.exports = async (req, res, next) => {
 
     console.log(dateTimeNow + " " + decodedToken.iat )
     if(dateTimeNow > decodedToken.exp) {
-      res.status(400).send({
+      return res.status(400).send({
         error: 'date time of token is expired'
       });
     }
@@ -26,14 +25,14 @@ module.exports = async (req, res, next) => {
 
     let userFromDb = await dbUser.findOne({email: email});
     if(!userFromDb) {
-      res.status(400).send({
-        error: 'date time of token is expired'
+      return res.status(400).send({
+        error: 'user not found'
       }); 
     }
       next();
   } catch {
-    res.status(401).json({
-      error: new Error('Invalid request!')
+    res.status(400).send({
+      error: 'no authorization token'
     });
   }
 }

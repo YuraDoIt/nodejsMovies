@@ -10,17 +10,17 @@ Movie.init({
     primaryKey: true,
     autoIncrement: true
   },
-  Title: {
+  title: {
     type: DataTypes.STRING,
   },
-  Release_Year: {
+  release_Year: {
     type: DataTypes.INTEGER
   },
-  Format: {
+  format: {
     type: DataTypes.ENUM,
     values: ['VHS','DVD','Blu-ray']
   },
-  Stars: [
+  stars: [
     DataTypes.STRING,
   ]
 }, {
